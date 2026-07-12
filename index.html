@@ -1,46 +1,220 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>La Máquina del Humo</title>
-<style>
-:root{--bg:#0b0b0d;--panel:#141418;--panel2:#1d1d22;--ink:#f5f5f7;--muted:#9a9aa3;--red:#d61f2c;--red2:#ff3d49;--line:#2a2a31;--paper:#f4efe5;--paperink:#24201b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(214,31,44,.18),transparent 30%),var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;min-height:100vh}.wrap{max-width:920px;margin:auto;padding:18px}.hero{text-align:center;padding:34px 14px 20px}.eyebrow{font:700 .72rem/1.2 monospace;letter-spacing:.14em;color:var(--red2)}h1{font-size:clamp(2.4rem,8vw,5.6rem);line-height:.93;margin:14px 0 10px;letter-spacing:-.055em}.hero p{margin:0 auto;color:var(--muted);max-width:620px;font-size:1.05rem;line-height:1.55}.start{display:flex;gap:8px;max-width:520px;margin:22px auto 0}.start input{flex:1;min-width:0;background:#111;border:1px solid var(--line);color:#fff;border-radius:14px;padding:14px 15px;outline:0}.start input:focus{border-color:var(--red)}button{font:inherit}.start button,.mainbtn{border:0;border-radius:14px;padding:14px 18px;background:var(--red);color:#fff;font-weight:900;cursor:pointer}.machine{display:none;background:linear-gradient(180deg,#17171b,#101013);border:1px solid var(--line);border-radius:26px;padding:16px;box-shadow:0 24px 70px rgba(0,0,0,.38)}.machine.on{display:block}.machine-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.machine-title{font-weight:900;letter-spacing:.06em}.status{font:700 .72rem monospace;color:var(--red2)}.reels{display:grid;gap:10px}.reel{display:grid;grid-template-columns:58px 1fr 54px;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:10px}.reel-icon{height:50px;border-radius:13px;background:var(--panel2);display:flex;align-items:center;justify-content:center;font-size:1.4rem}.reel-copy small{display:block;color:var(--muted);font-size:.72rem;font-weight:800;margin-bottom:4px}.reel-copy div{line-height:1.35}.spin{height:48px;border-radius:13px;border:1px solid #3a3a42;background:#202027;color:#fff;font-size:1.2rem;cursor:pointer}.spin:hover{border-color:var(--red)}.rolling .reel-copy div{animation:flicker .18s linear infinite}@keyframes flicker{50%{opacity:.25;transform:translateY(2px)}}.controls{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:12px}.controls button{border:0;border-radius:14px;padding:14px;font-weight:900;cursor:pointer}.all{background:var(--red);color:#fff}.copy{background:#25252c;color:#fff;border:1px solid var(--line)!important}.speech{margin-top:14px;background:#050506;border:1px solid var(--line);border-radius:18px;padding:18px}.speech-label{font:700 .7rem monospace;color:var(--red2);letter-spacing:.08em}.speech p{font-size:1.08rem;line-height:1.6;margin:10px 0 0}.result{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px 8px;text-align:center}.metric b{display:block;font-size:1.45rem;color:#fff}.metric span{font-size:.72rem;color:var(--muted)}.rank{grid-column:1/-1;background:var(--paper);color:var(--paperink);border-radius:16px;padding:16px;text-align:center;font-family:Georgia,serif;position:relative}.rank:before{content:"CLASIFICADO";position:absolute;right:12px;top:10px;border:3px solid rgba(170,0,0,.6);color:rgba(170,0,0,.75);padding:3px 7px;transform:rotate(-7deg);font:900 .68rem Arial}.rank small{display:block;font-family:monospace;margin-bottom:6px;color:#766d61}.rank strong{font-size:1.12rem}.share{margin-top:10px;width:100%;border:0;border-radius:14px;padding:14px;background:#fff;color:#111;font-weight:900;cursor:pointer}.habitat{margin-top:14px;text-align:center;color:var(--muted);font-size:.92rem;line-height:1.5}.habitat strong{color:#fff}.habitat a{color:#fff;text-decoration:none;border-bottom:1px solid var(--red)}.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,10px);background:#fff;color:#111;padding:10px 15px;border-radius:10px;opacity:0;transition:.2s}.toast.on{opacity:1;transform:translate(-50%,0)}@media(max-width:620px){.wrap{padding:10px}.hero{padding-top:25px}.start{display:block}.start button{width:100%;margin-top:8px}.reel{grid-template-columns:48px 1fr 48px}.reel-icon,.spin{height:44px}.controls{grid-template-columns:1fr}.result{grid-template-columns:1fr 1fr}.metric:last-of-type{grid-column:1/-1}}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>EL RETO DEL HUMO</title>
+    <style>
+        :root { --bg: #0a0a0a; --red: #8b0000; --text: #e0e0e0; --gold: #c5a059; --card: #1a1a1a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 450px; padding: 25px; }
+        .screen { display: none; flex-direction: column; min-height: 80vh; justify-content: center; }
+        .screen.active { display: flex; animation: fadeIn .35s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { color: var(--red); font-size: 2rem; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
+        .lead { font-size: 1.1rem; color: #888; margin-bottom: 30px; line-height: 1.5; }
+        .name-input { background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 8px; width: 100%; font-size: 1rem; margin-bottom: 20px; outline: none; }
+        .name-input:focus { border-color: var(--red); }
+        .module-title { font-size: .8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .options { display: grid; gap: 12px; }
+        .opt-btn { background: var(--card); border: 1px solid #333; color: #ccc; padding: 18px; border-radius: 10px; cursor: pointer; text-align: left; font-size: .95rem; line-height: 1.35; transition: .2s; }
+        .opt-btn:hover, .opt-btn:focus { border-color: var(--red); background: #222; outline: none; }
+        .progress { display: flex; gap: 5px; margin-top: 30px; justify-content: center; }
+        .dot { width: 40px; height: 3px; background: #333; }
+        .dot.active { background: var(--red); }
+        .btn { padding: 18px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: .9rem; transition: .2s; text-decoration: none; display: inline-block; text-align: center; }
+        .btn:active { transform: scale(.98); }
+        .btn-primary { background: var(--red); color: white; margin-top: 15px; }
+        .btn-secondary { background: transparent; border: 1px solid #444; color: #888; margin-top: 10px; }
+        .result-card { background: #111; border: 1px solid #222; padding: 25px; border-radius: 15px; margin-top: 20px; position: relative; }
+        .result-speech { font-style: italic; font-size: 1.15rem; color: white; line-height: 1.55; margin-bottom: 20px; }
+        .badge { display: inline-block; background: #222; color: var(--gold); padding: 6px 10px; border-radius: 5px; font-size: .75rem; margin-bottom: 10px; border: 1px solid var(--gold); }
+        .metrics { font-size: .72rem; color: #666; }
+        .closing { margin-top: 40px; padding-top: 20px; border-top: 1px solid #222; font-size: .85rem; color: #666; }
+        .closing strong { color: #aaa; display: block; margin-bottom: 5px; }
+        .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(10px); background: #1d1d1d; border: 1px solid #444; color: #fff; padding: 10px 16px; border-radius: 8px; opacity: 0; transition: .2s; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
 </head>
 <body>
-<div class="wrap">
-<section class="hero">
-<div class="eyebrow">HÁBITAT ASISTENCIAL PRESENTA</div>
-<h1>LA MÁQUINA<br>DEL HUMO</h1>
-<p>Gira cinco piezas. Construye un discurso impecable. Descubre cuánto contenido real has conseguido evitar.</p>
-<div class="start"><input id="name" maxlength="18" placeholder="Escribe un nombre"><button id="start">ACTIVAR MÁQUINA</button></div>
-</section>
-<section class="machine" id="machine">
-<div class="machine-head"><div class="machine-title">GENERADOR DE DISCURSOS</div><div class="status" id="status">SISTEMA LISTO</div></div>
-<div class="reels" id="reels"></div>
-<div class="controls"><button class="all" id="all">🎰 GIRAR TODO</button><button class="copy" id="copy">📋 COPIAR DISCURSO</button></div>
-<div class="speech"><div class="speech-label">&gt; DISCURSO GENERADO</div><p id="speech"></p></div>
-<div class="result"><div class="metric"><b id="smoke">—</b><span>Nivel de humo</span></div><div class="metric"><b id="content">—</b><span>Contenido útil</span></div><div class="metric"><b id="conviction">—</b><span>Convicción</span></div><div class="rank"><small>EXPEDIENTE DEL SUJETO</small><strong id="rank">Cargo pendiente de asignación</strong></div></div>
-<button class="share" id="share">😈 ENVIAR EXPEDIENTE A OTRA PERSONA</button>
-<div class="habitat"><strong>Hablar es fácil. Construir soluciones no.</strong><br><a href="https://habitatasistencial.com" target="_blank" rel="noopener">Hábitat Asistencial</a></div>
-</section>
+<div class="app">
+    <section id="s0" class="screen active">
+        <h1>¿Quieres jugar a un juego?</h1>
+        <p class="lead">Construye un discurso impecable sin decir absolutamente nada.</p>
+        <input type="text" id="username" class="name-input" placeholder="Tu nombre (opcional)" maxlength="18">
+        <button class="btn btn-primary" id="startBtn">Empezar</button>
+        <button class="btn btn-secondary" id="randomBtn">Todo al azar</button>
+    </section>
+
+    <section id="s1" class="screen">
+        <div class="module-title">Paso 1: El comienzo</div>
+        <div id="opts1" class="options"></div>
+        <div class="progress"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    </section>
+
+    <section id="s2" class="screen">
+        <div class="module-title">Paso 2: El tema</div>
+        <div id="opts2" class="options"></div>
+        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <button class="btn btn-secondary" data-back="1">Volver</button>
+    </section>
+
+    <section id="s3" class="screen">
+        <div class="module-title">Paso 3: La afirmación</div>
+        <div id="opts3" class="options"></div>
+        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+        <button class="btn btn-secondary" data-back="2">Volver</button>
+    </section>
+
+    <section id="s4" class="screen">
+        <div class="module-title">Paso 4: La justificación</div>
+        <div id="opts4" class="options"></div>
+        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+        <button class="btn btn-secondary" data-back="3">Volver</button>
+    </section>
+
+    <section id="s5" class="screen">
+        <div class="module-title">Paso 5: El cierre</div>
+        <div id="opts5" class="options"></div>
+        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+        <button class="btn btn-secondary" data-back="4">Volver</button>
+    </section>
+
+    <section id="s6" class="screen">
+        <div class="badge" id="final-cargo">Cargo asignado</div>
+        <div class="result-card">
+            <div id="final-text" class="result-speech"></div>
+            <div id="metrics" class="metrics"></div>
+        </div>
+        <button class="btn btn-primary" id="copyBtn">📋 Copiar discurso</button>
+        <button class="btn btn-secondary" id="shareBtn">😈 Retar a alguien</button>
+        <button class="btn btn-secondary" id="retryBtn">Reintentar</button>
+        <div class="closing">
+            <strong>Hablar es fácil. Construir soluciones no.</strong>
+            Hábitat Asistencial
+        </div>
+    </section>
 </div>
 <div class="toast" id="toast"></div>
+
 <script>
-const D={A:["Estimados compañeros y compañeras,","Del mismo modo podríamos afirmar que","No obstante, debemos tener en cuenta que","Tampoco deberíamos olvidar que","Así pues, lógicamente cabe subrayar que","Sin lugar a dudas, resulta obvio que","Por otra parte, podemos señalar que","Nuestro objetivo es claro, por lo que","Experiencias realizadas hasta ahora muestran que","Partiendo de esa base, cabe suponer que","También debemos tener en cuenta que","Quedaría así en evidencia que","Según nuestros ejes de actuación,","Evidentemente, esto nos sugiere que","Y, por último, podemos concluir que"],B:["el proceso iniciado recientemente","la carencia estructural del sistema","el análisis de todos los factores subyacentes","el cuestionamiento de las causas principales","la superación de esta compleja situación","la aplicación de una reducción indiscriminada","el asesoramiento de los expertos","el arranque de todo el proceso","el acuciante problema de los procedimientos","la actividad en la actual situación","la realización del plan previsto","la nueva infraestructura de la organización","el desarrollo de las diversas actividades","la incorporación de la nueva tecnología","el lanzamiento de nuevas propuestas"],C:["responde a objetivos esenciales","obliga a analizar las diversas claves","podría contribuir al desarrollo","precisa de una mayor determinación","anima a revisar los factores concluyentes","promueve actitudes necesarias","genera los incrementos necesarios","puede marcar las diferencias","cumple una función determinante","permite preparar las condiciones","contribuye a sentar las bases","prepara los elementos implicados","ofrece una gama de nuevas posibilidades","implica nuevos puntos de inflexión","ofrece razones necesarias y suficientes"],D:["para la determinación y el establecimiento","que facilitarían la implantación","garantizando el progreso y la evolución","lo que justifica la supervisión","para asegurar y afianzar los logros","lo que justificaría la corrección","animando a la revisión continua","lo que podría requerir una supervisión más precisa","de crecimiento real y sostenible","y estimula la investigación y la innovación","que favorecen el mantenimiento","determinando así la consecución","y facilita la creación e implantación","que preparan la consolidación","lo que anima a la modernización"],E:["del nuevo sistema que se desea implantar.","en todos y cada uno de los sectores en cuestión.","en el marco específico de la situación actual.","de los objetivos perseguidos.","de los elementos más estructurales.","en el corto, medio y largo plazo.","de todas las directrices marcadas.","de los cambios cualitativos del sistema.","de las expectativas que se habían generado.","en nuestro ámbito de intervención.","de la estrategia de cara al futuro.","del procedimiento y del sistema más idóneo.","de todo el conjunto de medidas.","a partir de las nuevas premisas.","que, sin duda, nos llevará al éxito. Muchas gracias."]};
-const info={A:["🎤","Cómo empieza"],B:["🏛","De qué habla"],C:["📈","Qué afirma"],D:["⚖","Cómo lo justifica"],E:["🏁","Cómo termina"]};
-const ranks=["Ministro de Asuntos Abstractos","Director General de Reuniones Innecesarias","Coordinador de Sinergias Indeterminadas","Embajador del Ya lo Veremos","Secretario de Compromisos Pendientes","Consultor Estratégico del Vacío Conceptual","Portavoz de la Comisión para la Comisión","Responsable de Soluciones por Definir","Arquitecto de Planes Pendientes","Experto Certificado en Responder sin Contestar"];
-const K=['A','B','C','D','E'];let sel={};const $=id=>document.getElementById(id);const rnd=n=>Math.floor(Math.random()*n);
-function build(){const box=$('reels');box.innerHTML='';K.forEach(k=>{sel[k]=rnd(D[k].length);const r=document.createElement('div');r.className='reel';r.id='reel-'+k;r.innerHTML='<div class="reel-icon">'+info[k][0]+'</div><div class="reel-copy"><small>'+info[k][1]+'</small><div id="text-'+k+'"></div></div><button class="spin" aria-label="Girar '+info[k][1]+'">↻</button>';r.querySelector('button').onclick=()=>spin(k);box.appendChild(r)});render()}
-function spin(k){const r=$('reel-'+k);r.classList.add('rolling');$('status').textContent='PROCESANDO HUMO...';let ticks=0;const t=setInterval(()=>{sel[k]=rnd(D[k].length);$('text-'+k).textContent=D[k][sel[k]];ticks++;if(ticks>8){clearInterval(t);r.classList.remove('rolling');$('status').textContent='SELECCIÓN BLOQUEADA';render()}},55)}
-function render(){K.forEach(k=>$('text-'+k).textContent=D[k][sel[k]]);const name=($('name').value||'Participante').trim();const text=K.map(k=>D[k][sel[k]]).join(' ');$('speech').textContent=name+': “'+text+'”';const seed=K.reduce((t,k,i)=>t+(sel[k]+1)*(i+4),0);$('smoke').textContent=(82+seed%17)+'%';$('content').textContent=(2+(seed*7)%12)+'%';$('conviction').textContent=(76+(seed*3)%23)+'%';$('rank').textContent=ranks[seed%ranks.length]}
-function all(){let i=0;$('status').textContent='MÁQUINA EN MARCHA';const timer=setInterval(()=>{spin(K[i]);i++;if(i===K.length){clearInterval(timer);setTimeout(()=>$('status').textContent='DISCURSO COMPLETADO',700)}},180)}
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800)}
-async function copy(){try{await navigator.clipboard.writeText($('speech').textContent);toast('Discurso copiado.')}catch(e){toast('Mantén pulsado para copiar.')}}
-async function share(){const text=$('speech').textContent+'\n\n'+$('rank').textContent+'\n\nHe generado un discurso sin decir nada. A ver si consigues superarlo.';if(navigator.share){try{await navigator.share({title:'La Máquina del Humo',text})}catch(e){}}else{try{await navigator.clipboard.writeText(text);toast('Expediente copiado para compartir.')}catch(e){toast('No se pudo compartir.')}}}
-$('start').onclick=()=>{if(!$('name').value.trim())return $('name').focus();$('machine').classList.add('on');render();$('machine').scrollIntoView({behavior:'smooth'})};$('name').onkeydown=e=>{if(e.key==='Enter')$('start').click()};$('name').oninput=()=>{if($('machine').classList.contains('on'))render()};$('all').onclick=all;$('copy').onclick=copy;$('share').onclick=share;build();
+const D = {
+    A: ["Estimados compañeros y compañeras", "Del mismo modo podríamos afirmar que", "No obstante, debemos tener en cuenta que", "Tampoco deberíamos olvidar que", "Así pues, lógicamente cabe subrayar que", "Sin lugar a dudas, resulta obvio que", "Por otra parte, podemos señalar que", "Nuestro objetivo es claro, por lo que", "Experiencias realizadas hasta ahora muestran que", "Partiendo de esa base, cabe suponer que", "También debemos tener en cuenta que", "Quedaría así en evidencia que", "Según nuestros ejes de actuación", "Evidentemente, esto nos sugiere que", "Y, por último, podemos concluir que"],
+    B: ["el proceso iniciado recientemente", "la carencia estructural del sistema", "el análisis de todos los factores subyacentes", "el cuestionamiento de las causas principales", "la superación de esta compleja situación", "aplicar una reducción indiscriminada", "el asesoramiento de los expertos", "el arranque de todo el proceso", "el acuciante problema de los procedimientos", "la actividad en la actual situación", "la realización del plan previsto", "la nueva infraestructura de la organización", "el desarrollo de las diversas actividades", "la incorporación de la nueva tecnología", "el lanzamiento de nuevas propuestas"],
+    C: ["responde a objetivos esenciales", "obliga a analizar las diversas claves", "podría contribuir al desarrollo", "precisa de una mayor determinación", "anima a revisar los factores concluyentes", "promueve actitudes necesarias", "genera los incrementos necesarios", "puede marcar las diferencias", "cumple una función determinante", "permite preparar las condiciones", "contribuye a sentar las bases", "prepara los elementos implicados", "ofrece una gama de nuevas posibilidades", "implica nuevos puntos de inflexión", "ofrece razones necesarias y suficientes"],
+    D: ["para la determinación y el establecimiento", "que facilitarían la implantación", "garantizando el progreso y la evolución", "lo que justifica la supervisión", "para asegurar y afianzar los logros", "lo que justificaría la corrección", "animando a la revisión continua", "lo que podría requerir una supervisión más precisa", "de crecimiento real y sostenible", "y estimula la investigación y la innovación", "que favorecen el mantenimiento", "determinando así la consecución", "y facilita la creación e implantación", "que preparan la consolidación", "lo que anima a la modernización"],
+    E: ["del nuevo sistema que se desea implantar.", "en todos y cada uno de los sectores en cuestión.", "en el marco específico de la actual situación.", "de los objetivos perseguidos.", "de los elementos más estructurales.", "en el corto, medio y largo plazo.", "de todas las directrices marcadas.", "de cambios cualitativos del sistema.", "de las expectativas que se habían generado.", "en nuestro ámbito de intervención.", "de la estrategia de cara al futuro.", "del procedimiento y del sistema más idóneo.", "de todo el conjunto de medidas.", "a partir de las nuevas premisas.", "que, sin duda, nos llevará al éxito. Muchas gracias."]
+};
+
+const CARGOS = [
+    "Subsecretario de Comisiones Inacabadas",
+    "Director General de Asuntos Indeterminados",
+    "Coordinador de Sinergias Vacías",
+    "Delegado de Protocolos Abstractos",
+    "Secretario de Estrategias Etéreas",
+    "Ministro Honorífico de Asuntos Pendientes",
+    "Portavoz del Comité para la Comisión",
+    "Consultor Sénior del Vacío Conceptual"
+];
+
+let selections = { A: "", B: "", C: "", D: "", E: "" };
+const columns = ["", "A", "B", "C", "D", "E"];
+
+function showScreen(index) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+    document.getElementById('s' + index).classList.add('active');
+    if (index > 0 && index < 6) renderOptions(index);
+    if (index === 6) finalize();
+}
+
+function sampleThree(items) {
+    const pool = [...items];
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, 3);
+}
+
+function renderOptions(step) {
+    const col = columns[step];
+    const container = document.getElementById('opts' + step);
+    container.innerHTML = '';
+    sampleThree(D[col]).forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = text;
+        btn.addEventListener('click', () => {
+            selections[col] = text;
+            showScreen(step + 1);
+        });
+        container.appendChild(btn);
+    });
+}
+
+function finalize() {
+    const name = document.getElementById('username').value.trim() || 'Candidato';
+    const speech = `${selections.A} ${selections.B} ${selections.C} ${selections.D} ${selections.E}`.replace(/\s+/g, ' ').trim();
+    const seed = Object.values(selections).join('').length;
+    const smoke = 82 + (seed % 17);
+    const utility = 2 + (seed % 11);
+    document.getElementById('final-text').textContent = `${name}: “${speech}”`;
+    document.getElementById('final-cargo').textContent = CARGOS[seed % CARGOS.length];
+    document.getElementById('metrics').textContent = `Humo detectado: ${smoke}% | Contenido útil: ${utility}%`;
+}
+
+function randomGame() {
+    Object.keys(D).forEach(col => {
+        selections[col] = D[col][Math.floor(Math.random() * D[col].length)];
+    });
+    showScreen(6);
+}
+
+function toast(message) {
+    const el = document.getElementById('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+async function copyResult() {
+    const text = document.getElementById('final-text').textContent;
+    try {
+        await navigator.clipboard.writeText(text);
+        toast('Discurso copiado.');
+    } catch {
+        toast('Mantén pulsado sobre el texto para copiarlo.');
+    }
+}
+
+async function shareResult() {
+    const text = `${document.getElementById('final-text').textContent}\n\nHe generado un discurso sin decir nada. A ver si consigues superarlo.`;
+    if (navigator.share) {
+        try { await navigator.share({ title: 'El reto del humo', text }); } catch {}
+    } else {
+        try {
+            await navigator.clipboard.writeText(text);
+            toast('Reto copiado para compartir.');
+        } catch {
+            toast('No se pudo compartir.');
+        }
+    }
+}
+
+function resetGame() {
+    selections = { A: "", B: "", C: "", D: "", E: "" };
+    showScreen(0);
+}
+
+document.getElementById('startBtn').addEventListener('click', () => showScreen(1));
+document.getElementById('randomBtn').addEventListener('click', randomGame);
+document.getElementById('copyBtn').addEventListener('click', copyResult);
+document.getElementById('shareBtn').addEventListener('click', shareResult);
+document.getElementById('retryBtn').addEventListener('click', resetGame);
+document.querySelectorAll('[data-back]').forEach(btn => btn.addEventListener('click', () => showScreen(Number(btn.dataset.back))));
 </script>
 </body>
 </html>
