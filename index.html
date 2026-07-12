@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Tablero Anti-Sabelotodo | Hábitat Asistencial</title>
 <meta name="description" content="Elige cinco ideas, crea un discurso impecable y atrévete a enviarlo.">
-<link rel="canonical" href="https://habitatasistencial.com/jugamos">
+<link rel="canonical" href="https://www.habitatasistencial.com/habitatasistencial-com-jugamos/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tablero Anti-Sabelotodo">
 <meta property="og:description" content="¿Te atreves a enviar el texto?">
-<meta property="og:url" content="https://habitatasistencial.com/jugamos">
+<meta property="og:url" content="https://www.habitatasistencial.com/habitatasistencial-com-jugamos/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4eee4">
 <style>
@@ -48,7 +48,7 @@ function save(){const v=order.map(k=>S[k]===null?"--":String(S[k]+1).padStart(2,
 function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1500)}
 $("start").onclick=begin;$("instant").onclick=randomAll;$("random").onclick=randomAll;$("again").onclick=randomAll;$("clear").onclick=clearAll;
 $("copy").onclick=async()=>{if(!full())return toast("Completa las cinco columnas");try{await navigator.clipboard.writeText(sentence());toast("Discurso copiado")}catch{toast("No se pudo copiar")}};
-function shareUrl(){const d=new URLSearchParams(location.search).get("d")||order.map(k=>String(S[k]+1).padStart(2,"0")).join("-");return `https://habitatasistencial.com/jugamos?d=${d}`}
+function shareUrl(){const d=new URLSearchParams(location.search).get("d")||order.map(k=>String(S[k]+1).padStart(2,"0")).join("-");return `https://www.habitatasistencial.com/habitatasistencial-com-jugamos/?d=${d}`}
 $("whatsapp").onclick=()=>{if(!full())return toast("Completa las cinco columnas");const text=`🎭 TABLERO ANTI-SABELOTODO\n\nHe creado un discurso impecable sin decir prácticamente nada.\n\n${code()}\n\n“${sentence()}”\n\n¿Te atreves a superarlo y enviarlo?\n${shareUrl()}`;window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank")};
 $("share").onclick=async()=>{if(!full())return toast("Completa las cinco columnas");const url=shareUrl();try{if(navigator.share)await navigator.share({title:"Tablero Anti-Sabelotodo",text:`Mi combinación: ${code()}. ¿Te atreves a enviarla?`,url});else{await navigator.clipboard.writeText(url);toast("Enlace copiado")}}catch{}};
 const q=new URLSearchParams(location.search).get("d");if(q){q.split("-").slice(0,5).forEach((v,i)=>{const n=parseInt(v,10);if(n>=1&&n<=15)S[order[i]]=n-1});if(full()){begin();render();setTimeout(()=>$("result").scrollIntoView({behavior:"smooth",block:"start"}),150)}}else render();
