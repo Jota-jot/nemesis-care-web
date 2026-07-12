@@ -1,220 +1,381 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>EL RETO DEL HUMO</title>
-    <style>
-        :root { --bg: #0a0a0a; --red: #8b0000; --text: #e0e0e0; --gold: #c5a059; --card: #1a1a1a; }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; }
-        .app { width: 100%; max-width: 450px; padding: 25px; }
-        .screen { display: none; flex-direction: column; min-height: 80vh; justify-content: center; }
-        .screen.active { display: flex; animation: fadeIn .35s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        h1 { color: var(--red); font-size: 2rem; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
-        .lead { font-size: 1.1rem; color: #888; margin-bottom: 30px; line-height: 1.5; }
-        .name-input { background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 8px; width: 100%; font-size: 1rem; margin-bottom: 20px; outline: none; }
-        .name-input:focus { border-color: var(--red); }
-        .module-title { font-size: .8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
-        .options { display: grid; gap: 12px; }
-        .opt-btn { background: var(--card); border: 1px solid #333; color: #ccc; padding: 18px; border-radius: 10px; cursor: pointer; text-align: left; font-size: .95rem; line-height: 1.35; transition: .2s; }
-        .opt-btn:hover, .opt-btn:focus { border-color: var(--red); background: #222; outline: none; }
-        .progress { display: flex; gap: 5px; margin-top: 30px; justify-content: center; }
-        .dot { width: 40px; height: 3px; background: #333; }
-        .dot.active { background: var(--red); }
-        .btn { padding: 18px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: .9rem; transition: .2s; text-decoration: none; display: inline-block; text-align: center; }
-        .btn:active { transform: scale(.98); }
-        .btn-primary { background: var(--red); color: white; margin-top: 15px; }
-        .btn-secondary { background: transparent; border: 1px solid #444; color: #888; margin-top: 10px; }
-        .result-card { background: #111; border: 1px solid #222; padding: 25px; border-radius: 15px; margin-top: 20px; position: relative; }
-        .result-speech { font-style: italic; font-size: 1.15rem; color: white; line-height: 1.55; margin-bottom: 20px; }
-        .badge { display: inline-block; background: #222; color: var(--gold); padding: 6px 10px; border-radius: 5px; font-size: .75rem; margin-bottom: 10px; border: 1px solid var(--gold); }
-        .metrics { font-size: .72rem; color: #666; }
-        .closing { margin-top: 40px; padding-top: 20px; border-top: 1px solid #222; font-size: .85rem; color: #666; }
-        .closing strong { color: #aaa; display: block; margin-bottom: 5px; }
-        .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(10px); background: #1d1d1d; border: 1px solid #444; color: #fff; padding: 10px 16px; border-radius: 8px; opacity: 0; transition: .2s; pointer-events: none; }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El Tablero del Humo | Reto de discursos</title>
+<meta name="description" content="Cinco elecciones. Un discurso sorprendentemente solemne. Juega en 20 segundos y reta a tu grupo de trabajo.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="El Tablero del Humo">
+<meta property="og:description" content="Cinco toques. Un discurso impecable. Cero garantías de que diga algo.">
+<meta property="og:url" content="https://jota-jot.github.io/nemesis-care-web/">
+<meta property="og:image" content="https://jota-jot.github.io/nemesis-care-web/preview-social.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="El Tablero del Humo">
+<meta name="twitter:description" content="Juega en 20 segundos y reta a tu grupo de trabajo.">
+<meta name="twitter:image" content="https://jota-jot.github.io/nemesis-care-web/preview-social.svg">
+<style>
+:root{
+  --bg:#f1ede5;
+  --paper:#fffdf8;
+  --ink:#20242a;
+  --muted:#6e746f;
+  --line:#d6cdbf;
+  --accent:#ff6b4a;
+  --accent-dark:#8b2f1d;
+  --soft:#ffe0d7;
+  --green:#167c63;
+  --yellow:#ffd75e;
+  --blue:#6f83ff;
+  --shadow:0 18px 55px rgba(56,48,38,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  min-height:100vh;
+}
+.app{width:min(1180px,calc(100% - 24px));margin:auto;padding:24px 0 44px}
+.hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:20px}
+.kicker{margin:0 0 8px;color:var(--accent-dark);font-weight:900;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase}
+h1{margin:0;font:800 clamp(2.2rem,5vw,4.8rem)/.95 Georgia,serif;letter-spacing:-.05em}
+.lead{margin:12px 0 0;color:var(--muted);font-size:1.02rem}
+.rule{background:var(--yellow);color:var(--ink);border-radius:999px;padding:12px 16px;font-weight:950;white-space:nowrap;transform:rotate(1.5deg)}
+.shell{background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:30px;box-shadow:0 10px 28px rgba(56,48,38,.08);overflow:hidden}
+.board-wrap{padding:22px;border-bottom:1px solid var(--line)}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:16px}
+.topbar h2{margin:0}
+.topbar p{margin:4px 0 0;color:var(--muted)}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:16px;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:rgba(255,107,74,.07);right:-45px;top:-45px}
+.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.panel-title strong{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dark)}
+.range{color:var(--muted);font-weight:800}
+.grid{display:grid;grid-template-columns:44px repeat(5,1fr);gap:8px;align-items:center}
+.corner{height:34px}
+.colhead{display:grid;place-items:center;height:34px;border-radius:10px;background:var(--ink);color:#fff;font-weight:950;position:relative}
+.colhead:nth-child(2){background:#ff6b4a}.colhead:nth-child(3){background:#6f83ff}.colhead:nth-child(4){background:#167c63}.colhead:nth-child(5){background:#a768d8}.colhead:nth-child(6){background:#e4a900}
+.colhead small{display:none;position:absolute;top:39px;color:var(--accent-dark);font-size:.62rem;white-space:nowrap}
+.colhead.revealed small{display:block}
+.rownum{font-weight:900;color:var(--muted);text-align:center}
+.cell{
+  aspect-ratio:1;
+  min-height:40px;
+  border-radius:50%;
+  border:1px solid #cfc5b7;
+  background:linear-gradient(#fff,#f3eee6);
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.04),0 4px 10px rgba(55,45,35,.07);
+  cursor:pointer;
+  transition:border-color .12s, background .12s;
+  position:relative;
+}
+.cell:hover{border-color:var(--accent)}
+.cell::after{content:"";position:absolute;inset:28%;border-radius:50%;background:#d9d1c5}
+.cell.selected{
+  background:var(--accent);
+  border-color:var(--accent);
+  box-shadow:0 8px 18px rgba(255,107,74,.24);
+}
+.cell.selected::after{background:#fff}
+.cell.locked:not(.selected){opacity:.34}
+.random-cell{border-style:dashed;background:#f7f1e8}
+.random-cell::after{content:"?";inset:auto;background:none;position:static;color:var(--accent-dark);font-weight:950;font-size:1rem}
+.how{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.how span{background:#eee7dc;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:.82rem;font-weight:850;color:var(--muted)}
+.how strong{color:var(--accent-dark)}
+.board-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:0;border-radius:13px;padding:12px 16px;font-weight:900;cursor:pointer;transition:.15s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:var(--accent);color:#fff}
+.secondary{background:#ebe4da;color:var(--ink)}
+.result{padding:clamp(22px,4vw,42px)}
+.result-head{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.result-head h2{margin:0}
+.coords{font-weight:900;letter-spacing:.08em;color:var(--muted)}
+.speech{
+  margin:22px 0 14px;
+  font:clamp(1.5rem,3.1vw,2.55rem)/1.35 Georgia,serif;
+  letter-spacing:-.02em;
+  min-height:150px;
+}
+.placeholder{color:#aaa}
+.status{min-height:26px;color:var(--green);font-weight:900}
+.challenge-box{margin:18px 0 0;background:linear-gradient(135deg,#fff3be,#ffe3d7);border:1px solid #e8c66c;border-radius:18px;padding:16px;display:none}
+.challenge-box.show{display:block}
+.challenge-box strong{display:block;font-size:1.05rem;margin-bottom:4px}
+.challenge-code{font-size:1.18rem;font-weight:950;letter-spacing:.08em}
+.whatsapp{background:#25D366;color:#fff}
+.whatsapp:hover{filter:brightness(.96)}
+.mini{font-size:.82rem;color:var(--muted);margin-top:7px}
+.footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted)}
+.footer strong{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;background:var(--ink);color:#fff;padding:11px 16px;border-radius:12px;transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.pulse{}
+@media(max-width:850px){
+  .hero{display:block}.rule{display:inline-block;margin-top:14px}
+  .panels{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .app{width:min(100% - 12px,1180px);padding-top:12px}
+  .board-wrap{padding:12px}.panel{padding:10px}
+  .grid{grid-template-columns:30px repeat(5,1fr);gap:6px}
+  .cell{min-height:34px}
+  .colhead{height:30px;font-size:.82rem}
+  .rownum{font-size:.78rem}
+  .result{padding:20px 16px}
+  .result-head{display:block}.coords{margin-top:8px}
+  .speech{min-height:180px}
+  .board-actions .btn,.result .btn{flex:1}
+}
+</style>
 </head>
 <body>
-<div class="app">
-    <section id="s0" class="screen active">
-        <h1>¿Quieres jugar a un juego?</h1>
-        <p class="lead">Construye un discurso impecable sin decir absolutamente nada.</p>
-        <input type="text" id="username" class="name-input" placeholder="Tu nombre (opcional)" maxlength="18">
-        <button class="btn btn-primary" id="startBtn">Empezar</button>
-        <button class="btn btn-secondary" id="randomBtn">Todo al azar</button>
-    </section>
+<main class="app">
+  <header class="hero">
+    <div>
+      <p class="kicker">Reto exprés para reuniones eternas</p>
+      <h1>¿Puedes crear el discurso más solemne?</h1>
+      <p class="lead">Cinco toques. Un discurso. Cero garantías de que diga algo.</p>
+    </div>
+    <div class="rule">Juega en 20 segundos</div>
+  </header>
 
-    <section id="s1" class="screen">
-        <div class="module-title">Paso 1: El comienzo</div>
-        <div id="opts1" class="options"></div>
-        <div class="progress"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-    </section>
-
-    <section id="s2" class="screen">
-        <div class="module-title">Paso 2: El tema</div>
-        <div id="opts2" class="options"></div>
-        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-        <button class="btn btn-secondary" data-back="1">Volver</button>
-    </section>
-
-    <section id="s3" class="screen">
-        <div class="module-title">Paso 3: La afirmación</div>
-        <div id="opts3" class="options"></div>
-        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
-        <button class="btn btn-secondary" data-back="2">Volver</button>
-    </section>
-
-    <section id="s4" class="screen">
-        <div class="module-title">Paso 4: La justificación</div>
-        <div id="opts4" class="options"></div>
-        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
-        <button class="btn btn-secondary" data-back="3">Volver</button>
-    </section>
-
-    <section id="s5" class="screen">
-        <div class="module-title">Paso 5: El cierre</div>
-        <div id="opts5" class="options"></div>
-        <div class="progress"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
-        <button class="btn btn-secondary" data-back="4">Volver</button>
-    </section>
-
-    <section id="s6" class="screen">
-        <div class="badge" id="final-cargo">Cargo asignado</div>
-        <div class="result-card">
-            <div id="final-text" class="result-speech"></div>
-            <div id="metrics" class="metrics"></div>
+  <section class="shell">
+    <div class="board-wrap">
+      <div class="topbar">
+        <div>
+          <h2>Elige una ficha en cada columna</h2>
+          <p>Cuando completes A–E, podrás retar al grupo de WhatsApp.</p>
         </div>
-        <button class="btn btn-primary" id="copyBtn">📋 Copiar discurso</button>
-        <button class="btn btn-secondary" id="shareBtn">😈 Retar a alguien</button>
-        <button class="btn btn-secondary" id="retryBtn">Reintentar</button>
-        <div class="closing">
-            <strong>Hablar es fácil. Construir soluciones no.</strong>
-            Hábitat Asistencial
-        </div>
-    </section>
-</div>
+      </div>
+
+      <div class="how"><span><strong>1.</strong> Toca una ficha en A</span><span><strong>2.</strong> Sigue hasta E</span><span><strong>3.</strong> Copia o comparte</span></div><div class="panels">
+        <section class="panel">
+          <div class="panel-title"><strong>Panel I</strong><span class="range">1–8</span></div>
+          <div class="grid" id="grid1"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title"><strong>Panel II</strong><span class="range">9–15 + azar</span></div>
+          <div class="grid" id="grid2"></div>
+        </section>
+      </div>
+
+      <div class="board-actions">
+        <button class="btn primary" id="random">🎲 No quiero pensar</button>
+        <button class="btn secondary" id="clear">Limpiar tablero</button>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="result-head">
+        <h2>Tu discurso</h2>
+        <div class="coords" id="coords">A— · B— · C— · D— · E—</div>
+      </div>
+
+      <div class="speech placeholder" id="speech">Empieza tocando cualquier ficha de la columna A.</div>
+      <div class="status" id="status"></div>
+
+      <div class="challenge-box" id="challengeBox">
+        <strong>Tu combinación-reto</strong>
+        <div class="challenge-code" id="challengeCode">A— · B— · C— · D— · E—</div>
+        <div class="mini">Mándasela a otra persona y que intente superar tu nivel de solemnidad.</div>
+      </div>
+
+      <div class="board-actions">
+        <button class="btn whatsapp" id="whatsapp">💬 Retar a alguien</button>
+        <button class="btn primary" id="copy">📋 Copiar discurso</button>
+        <button class="btn secondary" id="share">🔗 Compartir</button>
+        <button class="btn secondary" id="again">↻ Otra partida</button>
+      </div>
+
+      <div class="footer">
+        <strong>Mientras algunos construyen discursos, nosotros preferimos construir soluciones.</strong><br>
+        Hábitat Asistencial<br><br>
+        <a class="btn secondary" href="https://habitatasistencial.com/?utm_source=tablero_humo&utm_medium=referral&utm_campaign=lanzamiento_tablero" target="_blank" rel="noopener">Ver soluciones reales →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const D = {
-    A: ["Estimados compañeros y compañeras", "Del mismo modo podríamos afirmar que", "No obstante, debemos tener en cuenta que", "Tampoco deberíamos olvidar que", "Así pues, lógicamente cabe subrayar que", "Sin lugar a dudas, resulta obvio que", "Por otra parte, podemos señalar que", "Nuestro objetivo es claro, por lo que", "Experiencias realizadas hasta ahora muestran que", "Partiendo de esa base, cabe suponer que", "También debemos tener en cuenta que", "Quedaría así en evidencia que", "Según nuestros ejes de actuación", "Evidentemente, esto nos sugiere que", "Y, por último, podemos concluir que"],
-    B: ["el proceso iniciado recientemente", "la carencia estructural del sistema", "el análisis de todos los factores subyacentes", "el cuestionamiento de las causas principales", "la superación de esta compleja situación", "aplicar una reducción indiscriminada", "el asesoramiento de los expertos", "el arranque de todo el proceso", "el acuciante problema de los procedimientos", "la actividad en la actual situación", "la realización del plan previsto", "la nueva infraestructura de la organización", "el desarrollo de las diversas actividades", "la incorporación de la nueva tecnología", "el lanzamiento de nuevas propuestas"],
-    C: ["responde a objetivos esenciales", "obliga a analizar las diversas claves", "podría contribuir al desarrollo", "precisa de una mayor determinación", "anima a revisar los factores concluyentes", "promueve actitudes necesarias", "genera los incrementos necesarios", "puede marcar las diferencias", "cumple una función determinante", "permite preparar las condiciones", "contribuye a sentar las bases", "prepara los elementos implicados", "ofrece una gama de nuevas posibilidades", "implica nuevos puntos de inflexión", "ofrece razones necesarias y suficientes"],
-    D: ["para la determinación y el establecimiento", "que facilitarían la implantación", "garantizando el progreso y la evolución", "lo que justifica la supervisión", "para asegurar y afianzar los logros", "lo que justificaría la corrección", "animando a la revisión continua", "lo que podría requerir una supervisión más precisa", "de crecimiento real y sostenible", "y estimula la investigación y la innovación", "que favorecen el mantenimiento", "determinando así la consecución", "y facilita la creación e implantación", "que preparan la consolidación", "lo que anima a la modernización"],
-    E: ["del nuevo sistema que se desea implantar.", "en todos y cada uno de los sectores en cuestión.", "en el marco específico de la actual situación.", "de los objetivos perseguidos.", "de los elementos más estructurales.", "en el corto, medio y largo plazo.", "de todas las directrices marcadas.", "de cambios cualitativos del sistema.", "de las expectativas que se habían generado.", "en nuestro ámbito de intervención.", "de la estrategia de cara al futuro.", "del procedimiento y del sistema más idóneo.", "de todo el conjunto de medidas.", "a partir de las nuevas premisas.", "que, sin duda, nos llevará al éxito. Muchas gracias."]
+const D={
+A:["Estimados compañeros y compañeras","Del mismo modo podríamos afirmar que","No obstante, debemos tener en cuenta que","Tampoco deberíamos olvidar que","Así pues, lógicamente cabe subrayar que","Sin lugar a dudas, resulta obvio que","Por otra parte, podemos señalar que","Nuestro objetivo es claro, por lo que","Experiencias realizadas hasta ahora muestran que","Partiendo de esa base, cabe suponer que","También debemos tener en cuenta que","Quedaría así en evidencia que","Según nuestros ejes de actuación","Evidentemente, esto nos sugiere que","Y, por último, podemos concluir que"],
+B:["el proceso iniciado recientemente","la carencia estructural del sistema","el análisis de todos los factores subyacentes","el cuestionamiento de las causas principales","la superación de esta compleja situación","aplicar una reducción indiscriminada","el asesoramiento de los expertos","el arranque de todo el proceso","el acuciante problema de los procedimientos","la actividad en la actual situación","la realización del plan previsto","la nueva infraestructura de la organización","el desarrollo de las diversas actividades","la incorporación de la nueva tecnología","el lanzamiento de nuevas propuestas"],
+C:["responde a objetivos esenciales","obliga a analizar las diversas claves","podría contribuir al desarrollo","precisa de una mayor determinación","anima a revisar los factores concluyentes","promueve actitudes necesarias","genera los incrementos necesarios","puede marcar las diferencias","cumple una función determinante","permite preparar las condiciones","contribuye a sentar las bases","prepara los elementos implicados","ofrece una gama de nuevas posibilidades","implica nuevos puntos de inflexión","ofrece razones necesarias y suficientes"],
+D:["para la determinación y el establecimiento","que facilitarían la implantación","garantizando el progreso y la evolución","lo que justifica la supervisión","para asegurar y afianzar los logros","lo que justificaría la corrección","animando a la revisión continua","lo que podría requerir una supervisión más precisa","de crecimiento real y sostenible","y estimula la investigación y la innovación","que favorecen el mantenimiento","determinando así la consecución","y facilita la creación e implantación","que preparan la consolidación","lo que anima a la modernización"],
+E:["del nuevo sistema que se desea implantar.","en todos y cada uno de los sectores en cuestión.","en el marco específico de la actual situación.","de los objetivos perseguidos.","de los elementos más estructurales.","en el corto, medio y largo plazo.","de todas las directrices marcadas.","de cambios cualitativos del sistema.","de las expectativas que se habían generado.","en nuestro ámbito de intervención.","de la estrategia de cara al futuro.","del procedimiento y del sistema más idóneo.","de todo el conjunto de medidas.","a partir de las nuevas premisas.","que, sin duda, nos llevará al éxito. Muchas gracias."]};
+
+const order=["A","B","C","D","E"];
+const labels={A:"Inicio",B:"Tema",C:"Desarrollo",D:"Justificación",E:"Cierre"};
+const S={A:null,B:null,C:null,D:null,E:null};
+const comments=["🔥 Suena peligrosamente importante.","🏛️ Podría aprobarse por unanimidad.","🤫 Nadie se ha atrevido a preguntar qué significa.","📧 Perfecto para una reunión que pudo ser un correo.","🎩 Nivel de solemnidad: impecable."];
+
+function buildGrid(target,from,to){
+  const el=document.getElementById(target);
+  el.innerHTML='<div class="corner"></div>'+order.map(k=>`<div class="colhead" data-head="${k}">${k}<small>${labels[k]}</small></div>`).join("");
+  for(let n=from;n<=to;n++){
+    el.insertAdjacentHTML("beforeend",`<div class="rownum">${n}</div>`);
+    order.forEach(k=>{
+      el.insertAdjacentHTML("beforeend",`<button class="cell" data-col="${k}" data-index="${n-1}" aria-label="${k}${n}"></button>`);
+    });
+  }
+}
+
+buildGrid("grid1",1,8);
+buildGrid("grid2",9,15);
+const g2=document.getElementById("grid2");
+g2.insertAdjacentHTML("beforeend",`<div class="rownum">🎲</div>`);
+order.forEach(k=>{
+  g2.insertAdjacentHTML("beforeend",`<button class="cell random-cell" data-random="${k}" aria-label="Elegir al azar en ${k}"></button>`);
+});
+
+document.querySelectorAll(".cell[data-col]").forEach(btn=>{
+  btn.addEventListener("click",()=>choose(btn.dataset.col,Number(btn.dataset.index)));
+});
+document.querySelectorAll(".random-cell").forEach(btn=>{
+  btn.addEventListener("click",()=>choose(btn.dataset.random,Math.floor(Math.random()*15)));
+});
+
+function choose(col,index){
+  S[col]=index;
+  document.querySelector(`[data-head="${col}"]`).classList.add("revealed");
+  render();
+  updateUrl();
+}
+
+function render(){
+  document.querySelectorAll(".cell[data-col]").forEach(btn=>{
+    const col=btn.dataset.col;
+    const idx=Number(btn.dataset.index);
+    btn.classList.toggle("selected",S[col]===idx);
+    btn.classList.toggle("locked",S[col]!==null);
+  });
+  document.querySelectorAll(".random-cell").forEach(btn=>{
+    const col=btn.dataset.random;
+    btn.classList.toggle("locked",S[col]!==null);
+  });
+
+  const pieces=order.filter(k=>S[k]!==null).map(k=>D[k][S[k]]);
+  const full=order.every(k=>S[k]!==null);
+  const speech=document.getElementById("speech");
+
+  if(!pieces.length){
+    speech.textContent="Empieza tocando cualquier ficha de la columna A.";
+    speech.classList.add("placeholder");
+  }else{
+    speech.textContent=pieces.join(" ");
+    speech.classList.remove("placeholder");
+    speech.classList.add("pulse");
+  }
+
+  document.getElementById("coords").textContent=order.map(k=>k+(S[k]===null?"—":S[k]+1)).join(" · ");
+
+  const next=order.find(k=>S[k]===null);
+  document.getElementById("status").textContent=full
+    ? comments[Math.floor(Math.random()*comments.length)]
+    : next ? `Ahora toca una ficha en la columna ${next}.` : "";
+
+  const challengeBox=document.getElementById("challengeBox");
+  const challengeCode=document.getElementById("challengeCode");
+  if(full){
+    challengeBox.classList.add("show");
+    challengeCode.textContent=order.map(k=>k+(S[k]+1)).join(" · ");
+  }else{
+    challengeBox.classList.remove("show");
+  }
+
+  order.forEach(k=>{
+    const head=document.querySelector(`[data-head="${k}"]`);
+    if(S[k]!==null) head.classList.add("revealed");
+  });
+}
+
+function randomAll(){
+  order.forEach(k=>S[k]=Math.floor(Math.random()*15));
+  order.forEach(k=>document.querySelector(`[data-head="${k}"]`).classList.add("revealed"));
+  render();
+  updateUrl();
+}
+
+function clearAll(){
+  order.forEach(k=>S[k]=null);
+  document.querySelectorAll(".colhead").forEach(h=>h.classList.remove("revealed"));
+  history.replaceState(null,"",location.pathname);
+  render();
+}
+
+function updateUrl(){
+  const value=order.map(k=>S[k]===null?"--":String(S[k]+1).padStart(2,"0")).join("-");
+  history.replaceState(null,"",location.pathname+"?d="+value);
+}
+
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),1500);
+}
+
+document.getElementById("random").onclick=randomAll;
+document.getElementById("again").onclick=randomAll;
+document.getElementById("clear").onclick=clearAll;
+
+document.getElementById("copy").onclick=async()=>{
+  if(!order.every(k=>S[k]!==null)) return toast("Completa las cinco columnas");
+  try{
+    await navigator.clipboard.writeText(order.map(k=>D[k][S[k]]).join(" "));
+    toast("Discurso copiado");
+  }catch{
+    toast("No se pudo copiar");
+  }
 };
 
-const CARGOS = [
-    "Subsecretario de Comisiones Inacabadas",
-    "Director General de Asuntos Indeterminados",
-    "Coordinador de Sinergias Vacías",
-    "Delegado de Protocolos Abstractos",
-    "Secretario de Estrategias Etéreas",
-    "Ministro Honorífico de Asuntos Pendientes",
-    "Portavoz del Comité para la Comisión",
-    "Consultor Sénior del Vacío Conceptual"
-];
+document.getElementById("whatsapp").onclick=()=>{
+  if(!order.every(k=>S[k]!==null)) return toast("Completa las cinco columnas");
+  const coords=order.map(k=>k+(S[k]+1)).join(" · ");
+  const speech=order.map(k=>D[k][S[k]]).join(" ");
+  const url=(location.protocol==="file:"?"https://jota-jot.github.io/nemesis-care-web/":location.href);
+  const text=`🎯 RETO DEL HUMO
 
-let selections = { A: "", B: "", C: "", D: "", E: "" };
-const columns = ["", "A", "B", "C", "D", "E"];
+He conseguido crear un discurso perfecto sin decir prácticamente nada.
 
-function showScreen(index) {
-    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-    document.getElementById('s' + index).classList.add('active');
-    if (index > 0 && index < 6) renderOptions(index);
-    if (index === 6) finalize();
-}
+Mi combinación: ${coords}
 
-function sampleThree(items) {
-    const pool = [...items];
-    for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
+"${speech}"
+
+¿Puedes superarlo? 😏
+${url}`;
+  window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+};
+
+document.getElementById("share").onclick=async()=>{
+  if(!order.every(k=>S[k]!==null)) return toast("Completa las cinco columnas");
+  const coords=order.map(k=>k+(S[k]+1)).join(" · ");
+  const text=`Mi combinación es ${coords}. ¿Puedes superarla?`;
+  try{
+    if(navigator.share) await navigator.share({title:"El tablero del humo",text,url:location.href});
+    else{
+      await navigator.clipboard.writeText(text+" "+location.href);
+      toast("Combinación copiada");
     }
-    return pool.slice(0, 3);
-}
+  }catch{}
+};
 
-function renderOptions(step) {
-    const col = columns[step];
-    const container = document.getElementById('opts' + step);
-    container.innerHTML = '';
-    sampleThree(D[col]).forEach(text => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.textContent = text;
-        btn.addEventListener('click', () => {
-            selections[col] = text;
-            showScreen(step + 1);
-        });
-        container.appendChild(btn);
-    });
+const q=new URLSearchParams(location.search).get("d");
+if(q){
+  q.split("-").slice(0,5).forEach((v,i)=>{
+    const n=parseInt(v,10);
+    if(n>=1&&n<=15) S[order[i]]=n-1;
+  });
 }
-
-function finalize() {
-    const name = document.getElementById('username').value.trim() || 'Candidato';
-    const speech = `${selections.A} ${selections.B} ${selections.C} ${selections.D} ${selections.E}`.replace(/\s+/g, ' ').trim();
-    const seed = Object.values(selections).join('').length;
-    const smoke = 82 + (seed % 17);
-    const utility = 2 + (seed % 11);
-    document.getElementById('final-text').textContent = `${name}: “${speech}”`;
-    document.getElementById('final-cargo').textContent = CARGOS[seed % CARGOS.length];
-    document.getElementById('metrics').textContent = `Humo detectado: ${smoke}% | Contenido útil: ${utility}%`;
-}
-
-function randomGame() {
-    Object.keys(D).forEach(col => {
-        selections[col] = D[col][Math.floor(Math.random() * D[col].length)];
-    });
-    showScreen(6);
-}
-
-function toast(message) {
-    const el = document.getElementById('toast');
-    el.textContent = message;
-    el.classList.add('show');
-    clearTimeout(el._timer);
-    el._timer = setTimeout(() => el.classList.remove('show'), 1800);
-}
-
-async function copyResult() {
-    const text = document.getElementById('final-text').textContent;
-    try {
-        await navigator.clipboard.writeText(text);
-        toast('Discurso copiado.');
-    } catch {
-        toast('Mantén pulsado sobre el texto para copiarlo.');
-    }
-}
-
-async function shareResult() {
-    const text = `${document.getElementById('final-text').textContent}\n\nHe generado un discurso sin decir nada. A ver si consigues superarlo.`;
-    if (navigator.share) {
-        try { await navigator.share({ title: 'El reto del humo', text }); } catch {}
-    } else {
-        try {
-            await navigator.clipboard.writeText(text);
-            toast('Reto copiado para compartir.');
-        } catch {
-            toast('No se pudo compartir.');
-        }
-    }
-}
-
-function resetGame() {
-    selections = { A: "", B: "", C: "", D: "", E: "" };
-    showScreen(0);
-}
-
-document.getElementById('startBtn').addEventListener('click', () => showScreen(1));
-document.getElementById('randomBtn').addEventListener('click', randomGame);
-document.getElementById('copyBtn').addEventListener('click', copyResult);
-document.getElementById('shareBtn').addEventListener('click', shareResult);
-document.getElementById('retryBtn').addEventListener('click', resetGame);
-document.querySelectorAll('[data-back]').forEach(btn => btn.addEventListener('click', () => showScreen(Number(btn.dataset.back))));
+render();
 </script>
 </body>
 </html>
