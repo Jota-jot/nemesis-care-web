@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from html.parser import HTMLParser
 import json
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, urlencode, urlparse
 from urllib.request import Request, urlopen
 
 import nemesis_mvp as core
@@ -51,7 +51,7 @@ class _ResultsParser(HTMLParser):
             self._current["title"] = " ".join("".join(self._buffer).split())
             self._capture = None
             self._buffer = []
-        elif self._capture == "snippet" and tag == "div" and self._current is not None:
+        elif self._capture == "snippet" and tag in {"div", "a"} and self._current is not None:
             self._current["snippet"] = " ".join("".join(self._buffer).split())
             self._capture = None
             self._buffer = []
@@ -79,6 +79,9 @@ def search_web(query: str, limit: int = 8, timeout: int = 12) -> list[dict]:
     results = []
     for item in parser.results:
         url, title = item.get("url", ""), item.get("title", "")
+        parsed = urlparse(url)
+        if parsed.hostname and parsed.hostname.endswith("duckduckgo.com"):
+            url = parse_qs(parsed.query).get("uddg", [url])[0]
         if title and url.startswith(("https://", "http://")):
             results.append({"title": title, "url": url, "snippet": item.get("snippet", "")})
         if len(results) >= limit:
