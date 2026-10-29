@@ -92,6 +92,7 @@ def search_web(query: str, limit: int = 8, timeout: int = 12) -> list[dict]:
 def run_search(db, query: str, limit: int = 8, timeout: int = 12) -> dict:
     results = search_web(query, limit=limit, timeout=timeout)
     task_id = core.add_task(
+        db,
         title=f"RADAR: {query}",
         objective="Explorar resultados web; verificar manualmente fuentes, fechas y afirmaciones antes de tratarlas como hechos.",
         priority=4,
