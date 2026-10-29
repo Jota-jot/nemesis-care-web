@@ -22,14 +22,23 @@ class _ResultsParser(HTMLParser):
         self._capture = None
         self._buffer = []
 
+    def _finish_current(self):
+        if self._current and self._current.get("title"):
+            self.results.append(self._current)
+        self._current = None
+
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set((attrs.get("class") or "").split())
         if tag == "a" and "result__a" in classes:
+            self._finish_current()
             self._current = {"title": "", "url": attrs.get("href", ""), "snippet": ""}
             self._capture = "title"
             self._buffer = []
-        elif self._current is not None and tag in {"a", "div"} and "result__snippet" in classes:
+        elif self._current is not None and tag == "a" and "result__snippet" in classes:
+            self._capture = "snippet"
+            self._buffer = []
+        elif self._current is not None and tag == "div" and "result__snippet" in classes:
             self._capture = "snippet"
             self._buffer = []
 
@@ -46,15 +55,10 @@ class _ResultsParser(HTMLParser):
             self._current["snippet"] = " ".join("".join(self._buffer).split())
             self._capture = None
             self._buffer = []
-        if tag == "div" and self._current is not None and self._current.get("title"):
-            # A result is finalized when the next result link starts, or at end of document.
-            pass
 
     def close(self):
         super().close()
-        if self._current and self._current.get("title"):
-            self.results.append(self._current)
-            self._current = None
+        self._finish_current()
 
 
 def search_web(query: str, limit: int = 8, timeout: int = 12) -> list[dict]:
@@ -72,12 +76,9 @@ def search_web(query: str, limit: int = 8, timeout: int = 12) -> list[dict]:
         html = response.read(1_500_000).decode("utf-8", errors="replace")
     parser = _ResultsParser()
     parser.feed(html)
-    # DDG uses one result__a anchor per result; close the prior result when the next begins.
-    # The parser below is deliberately conservative and drops entries without a usable URL/title.
     results = []
     for item in parser.results:
-        url = item.get("url", "")
-        title = item.get("title", "")
+        url, title = item.get("url", ""), item.get("title", "")
         if title and url.startswith(("https://", "http://")):
             results.append({"title": title, "url": url, "snippet": item.get("snippet", "")})
         if len(results) >= limit:
@@ -98,21 +99,13 @@ def run_search(db, query: str, limit: int = 8, timeout: int = 12) -> dict:
         if item["snippet"]:
             lead += " — " + item["snippet"]
         evidence_id = core.add_evidence(
-            db,
-            claim=lead,
-            evidence_type="hypothesis",
-            confidence=0.25,
-            source_url=item["url"],
-            source_title=item["title"],
-            task_id=task_id,
+            db, claim=lead, evidence_type="hypothesis", confidence=0.25,
+            source_url=item["url"], source_title=item["title"], task_id=task_id,
             notes="Pista automática de buscador; NO es un hecho verificado. Abrir la fuente, comprobar fecha, autoría y evidencia primaria antes de usarla.",
         )
         saved.append({**item, "evidence_id": evidence_id, "status": "lead_not_verified"})
     return {
-        "query": query,
-        "task_id": task_id,
-        "result_count": len(saved),
-        "results": saved,
+        "query": query, "task_id": task_id, "result_count": len(saved), "results": saved,
         "limitations": [
             "Son resultados de búsqueda, no páginas leídas ni hechos confirmados.",
             "El buscador puede bloquear, cambiar el HTML o devolver resultados incompletos.",
